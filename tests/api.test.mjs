@@ -69,4 +69,29 @@ await check('concurrent edit during upload is preserved with its original image'
  assert.equal(JSON.parse(q.data).title,'保留人工校对');assert.equal(q.status,'confirmed');assert.equal(objects.size,1);
  await call('questions/'+qid,'DELETE');
 });
+
+let failedId;const originalFetch=globalThis.fetch;
+process.env.MODEL_API_KEY='fixture';process.env.MODEL_BASE_URL='https://api.minimax.cn/v1';process.env.MODEL_NAME='fixture';
+let modelData={stage:'invalid'};globalThis.fetch=async()=>Response.json({choices:[{message:{content:JSON.stringify(modelData)}}]});
+await check('schema failure is explicit and original image remains retryable',async()=>{
+ const r=await call('upload','POST',form);assert.equal(r.status,200);const body=await r.json();failedId=body.id;assert.equal(body.recognitionStatus,'failed');assert.match(body.recognitionMessage,/识别失败/);
+ const jobs=(await (await call('jobs')).json()).jobs;assert.equal(jobs.find(j=>j.question_id===failedId).status,'failed');assert.equal((await call('questions/'+failedId+'/image')).status,200);
+});
+await check('placeholder cannot enter review through confirmation',async()=>{
+ assert.equal((await call('questions/'+failedId,'PATCH',{title:'新错题 · 待整理',question_markdown:'请对照原图填写题目。',stage:'primary',grade:5})).status,400);
+ assert.equal((await (await call('reviews')).json()).reviews.length,0);
+});
+await check('retry enforces ownership and consumes monthly budget before model',async()=>{
+ globalThis.__testUser={userId:'student-b',email:'b@example.test'};assert.equal((await call('questions/'+failedId+'/recognize','POST')).status,404);globalThis.__testUser={userId:'student-a',email:'a@example.test'};
+ sqlite.prepare('UPDATE upload_budget SET used=500 WHERE month=?').run(month);assert.equal((await call('questions/'+failedId+'/recognize','POST')).status,429);sqlite.prepare('UPDATE upload_budget SET used=0 WHERE month=?').run(month);
+ assert.equal((await call('questions/'+failedId+'/recognize','POST')).status,502);assert.equal(sqlite.prepare('SELECT used FROM upload_budget WHERE month=?').get(month).used,1);
+});
+await check('retry fills same draft from preserved image without creating duplicates',async()=>{
+ modelData={title:'恢复题目',question_markdown:'x+2=5',correct_answer:'3',stage:'primary',grade:5};const before=objects.size;
+ assert.equal((await call('questions/'+failedId+'/recognize','POST')).status,200);const q=sqlite.prepare('SELECT * FROM questions WHERE id=?').get(failedId);assert.equal(q.status,'draft');assert.equal(JSON.parse(q.data).title,'恢复题目');assert.equal(objects.size,before);
+ assert.equal((await call('questions/'+failedId+'/recognize','POST')).status,409);
+ assert.equal((await call('questions/'+failedId,'PATCH',modelData)).status,200);await call('questions/'+failedId,'DELETE');
+});
+globalThis.fetch=originalFetch;delete process.env.MODEL_API_KEY;
+
 console.log(`${passes} API tests passed (SQLite database; mocked identity and R2; no live model)`);
