@@ -23,9 +23,17 @@ async function handler(req:Request){
  if(all.filter((q:any)=>q.created.slice(0,10)===now.slice(0,10)).length>=20)return json({error:'今日上传已达 20 张'},429);
  const id=crypto.randomUUID(),key=`${owner}/${id}`;const bytes=new Uint8Array(await f.arrayBuffer());
  let draft:any={title:'新错题 · 待整理',question_markdown:'请对照原图填写题目。',solution_markdown:'',correct_answer:'',student_wrong_answer:'',stage:'primary',grade:5,knowledge_points:[],error_type:'unknown',image_required:true,recognition_notes:'模型尚未配置，请手动核对整理。'};
+ const initialDraft=JSON.stringify(draft);
+ const month=now.slice(0,7);
+ const reserved=await db.batch([
+ db.prepare('INSERT INTO upload_budget(month,used) VALUES(?,0) ON CONFLICT(month) DO NOTHING').bind(month),
+ db.prepare('INSERT INTO questions(id,owner,data,status,image,created) SELECT ?,?,?,?,?,? WHERE (SELECT used FROM upload_budget WHERE month=?)<500 AND (SELECT COUNT(*) FROM questions)<500').bind(id,owner,JSON.stringify(draft),'draft',key,now,month),
+ db.prepare('UPDATE upload_budget SET used=used+1 WHERE month=? AND EXISTS(SELECT 1 FROM questions WHERE id=?)').bind(month,id)
+ ]);
+ if(reserved[1].meta.changes!==1)return json({error:'为保护免费额度，全站最多保留 500 张原图，每月最多尝试上传 500 次。请下月再试或联系管理员。'},429);
+ try{await bucket.put(key,bytes,{httpMetadata:{contentType:f.type}})}catch(e){await bucket.delete(key);await db.prepare("DELETE FROM questions WHERE id=? AND owner=? AND status='draft' AND data=?").bind(id,owner,initialDraft).run();throw e}
  if(process.env.MODEL_API_KEY){try{draft=await recognizeImage(bytes,f.type)}catch{draft.recognition_notes='识别失败，原图已保留，请手动整理或重新上传。'}}
- await bucket.put(key,bytes,{httpMetadata:{contentType:f.type}});
- try{await db.prepare('INSERT INTO questions(id,owner,data,status,image,created) VALUES(?,?,?,?,?,?)').bind(id,owner,JSON.stringify(draft),'draft',key,now).run()}catch(e){await bucket.delete(key);throw e}return json({id});}
+ const saved=await db.prepare("UPDATE questions SET data=? WHERE id=? AND owner=? AND status='draft' AND data=?").bind(JSON.stringify(draft),id,owner,initialDraft).run();if(saved.meta.changes!==1){const existing=await db.prepare('SELECT id FROM questions WHERE id=? AND owner=?').bind(id,owner).first();if(!existing){await bucket.delete(key);return json({error:'题目已被删除，请重新上传'},409)}}return json({id});}
  const match=path.match(/^questions\/([^/]+)(\/image)?$/);
  if(match){const q=all.find((q:any)=>q.id===match[1]);if(!q)return json({error:'题目不存在'},404);
  if(match[2]){const image=await bucket.get(q.image);return image?new Response(image.body,{headers:{'Content-Type':image.httpMetadata?.contentType||'image/jpeg','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}}):json({error:'图片不存在'},404)}
