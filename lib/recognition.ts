@@ -40,7 +40,7 @@ export async function recognizeImage(buffer: Uint8Array, mime: string): Promise<
     phase = 'question_json';
     const parsed = QuestionSchema.safeParse(JSON.parse(unwrapJson(content)));
     phase = 'schema';
-    if (!parsed.success) throw new Error(`题目识别结果未通过 Schema 校验: ${parsed.error.issues.map(e=>e.path.join('.')).join(', ')}`);
+    if (!parsed.success) { console.error('Recognition schema mismatch', { issues: parsed.error.issues.map(e=>({path:e.path.join('.'),code:e.code})) }); throw new Error('题目识别结果字段格式不正确'); }
     phase = 'grade';
     if (parsed.data.stage === 'primary' && parsed.data.grade > 6 || parsed.data.stage === 'junior' && parsed.data.grade < 7) {
       throw new Error('模型返回的学段与年级不匹配');
