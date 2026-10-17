@@ -10,6 +10,7 @@ export async function recognizeImage(buffer: Uint8Array, mime: string): Promise<
   const base = requireEnv('MODEL_BASE_URL').replace(/\/$/,'');
   if (!base.startsWith('https://')) throw new Error('模型端点必须使用 HTTPS');
   const controller = new AbortController();
+  let phase = 'request';
   const timeout = setTimeout(() => controller.abort(), 55000);
   try {
     const imageBase64 = Buffer.from(buffer).toString('base64');
@@ -27,15 +28,25 @@ export async function recognizeImage(buffer: Uint8Array, mime: string): Promise<
         ],
       }),
     });
+    console.info('Recognition response status', { httpStatus: response.status });
     if (!response.ok) throw new Error(`视觉模型服务异常（HTTP ${response.status}）`);
-    const payload = await response.json() as {choices?:{message?:{content?:string}}[]};
+    phase = 'response_json';
+    const payload = await response.json() as {base_resp?:{status_code?:number};choices?:{message?:{content?:string}}[]};
+    console.info('Recognition provider status', { code: typeof payload.base_resp?.status_code === 'number' ? payload.base_resp.status_code : null });
+    phase = 'content';
     const content = payload?.choices?.[0]?.message?.content;
     if (typeof content !== 'string') throw new Error('视觉模型没有返回结构化文本');
+    phase = 'question_json';
     const parsed = QuestionSchema.safeParse(JSON.parse(unwrapJson(content)));
+    phase = 'schema';
     if (!parsed.success) throw new Error(`题目识别结果未通过 Schema 校验: ${parsed.error.issues.map(e=>e.path.join('.')).join(', ')}`);
+    phase = 'grade';
     if (parsed.data.stage === 'primary' && parsed.data.grade > 6 || parsed.data.stage === 'junior' && parsed.data.grade < 7) {
       throw new Error('模型返回的学段与年级不匹配');
     }
     return parsed.data;
+  } catch (error) {
+    console.error('Recognition failed', { phase, errorType: error instanceof Error ? error.name : 'unknown' });
+    throw error;
   } finally { clearTimeout(timeout); }
 }
