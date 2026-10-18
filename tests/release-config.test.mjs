@@ -45,3 +45,29 @@ test('missing build metadata fails instead of inheriting production settings', (
   delete missing.AI_MLS_PREVIEW_D1_ID;
   assert.throws(() => createReleaseConfig(generated, settings, missing), /Missing release variable/);
 });
+
+test('model inheritance is opt-in and limited to the three Preview model bindings', () => {
+  const baseline = createReleaseConfig(generated, settings, environment);
+  const config = createReleaseConfig(generated, settings, {
+    ...environment, AI_MLS_PREVIEW_MODEL_INHERIT: '1',
+  });
+  assert.deepEqual(config.previews.unsafe.bindings, [
+    { name: 'MODEL_API_KEY', type: 'inherit' },
+    { name: 'MODEL_BASE_URL', type: 'inherit' },
+    { name: 'MODEL_NAME', type: 'inherit' },
+  ]);
+  const { previews, ...production } = config;
+  const { previews: baselinePreview, ...baselineProduction } = baseline;
+  assert.deepEqual(production, baselineProduction);
+  assert.equal(baselinePreview.unsafe, undefined);
+  const { unsafe, ...storageAndAccess } = previews;
+  assert.deepEqual(storageAndAccess, baselinePreview);
+  assert.equal(unsafe.bindings.length, 3);
+  assert.equal(settings.previews.unsafe, undefined);
+});
+
+test('rejects ambiguous Preview model inheritance opt-in', () => {
+  assert.throws(() => createReleaseConfig(generated, settings, {
+    ...environment, AI_MLS_PREVIEW_MODEL_INHERIT: 'true',
+  }), /AI_MLS_PREVIEW_MODEL_INHERIT/);
+});

@@ -29,6 +29,17 @@ export function createReleaseConfig(generated, template, environment = process.e
     || settings.production.r2_buckets[0].bucket_name === settings.previews.r2_buckets[0].bucket_name) {
     throw new Error('Preview D1/R2 must differ from production');
   }
+  const inheritModel = environment.AI_MLS_PREVIEW_MODEL_INHERIT;
+  if (inheritModel !== undefined && inheritModel !== '1') {
+    throw new Error('AI_MLS_PREVIEW_MODEL_INHERIT must be unset or 1');
+  }
+  if (inheritModel === '1') {
+    // Preview uploads ignore keep_vars. Inherit only this Preview's existing model bindings.
+    settings.previews.unsafe = {
+      bindings: ['MODEL_API_KEY', 'MODEL_BASE_URL', 'MODEL_NAME']
+        .map(name => ({ name, type: 'inherit' })),
+    };
+  }
   return {
     ...generated,
     account_id: settings.account_id,
