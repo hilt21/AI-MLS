@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-18",
+  "stage": "M1",
+  "branch": "codex/m1-isolated-preview",
+  "head": "d023eefeabaa3e92a5a11d80489ef1cd21688740",
+  "main_unchanged": "ebc287a71823836b2711b1ff47ac0cd0a8b381a0",
+  "build": {
+    "id": "1fe5bcf5-cf6e-44fe-b561-9803cfb0457e",
+    "status": "success",
+    "check_matches_head": true
+  },
+  "preview": {
+    "url": "https://codex-m1-isolated-preview-ai-mls.hanyuelt.workers.dev/",
+    "deployment": "79d21013-aad2-4d06-8596-623c39312cff",
+    "compatibility_date": "2026-05-15",
+    "db_distinct_from_production": true,
+    "bucket_distinct_from_production": true,
+    "public_r2": false,
+    "model_secret_present": false,
+    "synthetic_fixture_retained": true
+  },
+  "checks": {
+    "config_tests": 8,
+    "api_tests": 19,
+    "typecheck": 0,
+    "build_release": 0,
+    "dry_run": 0,
+    "new_scripts_lint": 0,
+    "whole_repo_lint": {
+      "errors": 21,
+      "warnings": 10,
+      "same_as_baseline": true
+    }
+  },
+  "production_comparison": {
+    "worker_settings_unchanged": true,
+    "deployments_unchanged": true,
+    "build_settings_unchanged": true,
+    "access_applications_unchanged": true
+  },
+  "sites_freeze": "blocked",
+  "real_model_test": "not_run",
+  "full_e2e": "not_run"
+}

@@ -1,0 +1,105 @@
+{
+  "stage": "M4-A",
+  "date": "2026-10-18",
+  "status": "preparation_and_isolated_functional_validation_complete_cpu_gate_not_passed",
+  "production_scale": {
+    "questions": 2,
+    "attempts": 2,
+    "upload_budget_rows": 1,
+    "image_references": 2,
+    "question_json_chars": 2132,
+    "attempt_json_chars": 1420,
+    "d1_file_bytes": 36864,
+    "r2_objects": 2,
+    "r2_total_bytes": 2368115,
+    "r2_max_object_bytes": 1367842,
+    "schema_matches_current_backup_inventory": true,
+    "content_read": false,
+    "reference_to_object_identity_match": "not_checked_by_this_aggregate_audit"
+  },
+  "synthetic_capacity": {
+    "questions": 6,
+    "attempts": 24,
+    "images": 6,
+    "each_image_bytes": 2097152,
+    "total_image_bytes": 12582912,
+    "local_restore_passed": true,
+    "local_restore_wall_ms": 10906,
+    "local_operator_max_rss_kib": 312928,
+    "local_r2_calls_whole_drill": {
+      "put": 132,
+      "get": 223,
+      "list": 2,
+      "delete": 8
+    },
+    "cloud_backup_points_in_retention_drill": 15,
+    "cloud_sha256_readback_passed": true,
+    "cloud_expired_objects_deleted": 8,
+    "cloud_logs_filtered_event_count": 51,
+    "cloud_backup_cpu_ms_range": [
+      64,
+      89
+    ],
+    "cloud_validation_cpu_ms_range": [
+      35,
+      43
+    ],
+    "current_workers_plan": "free",
+    "documented_free_cron_cpu_ms": 10,
+    "cpu_budget_gate": "not_passed_despite_successful_test_responses",
+    "cloud_isolate_peak_memory": "not_measured",
+    "seven_natural_days_observed": false,
+    "five_hundred_question_capacity_verified": false
+  },
+  "health": {
+    "authenticated_readonly_endpoint": true,
+    "workerd_redirect_error_reproduced_then_fixed_with_manual": true,
+    "cloud_private_test_app_sequence": [
+      200,
+      503,
+      200
+    ],
+    "failure_mail_inbox_utc": "2026-10-18T06:01:26Z",
+    "recovery_mail_inbox_utc": "2026-10-18T06:01:35Z",
+    "initial_false_positive_disclosed": true,
+    "production_transport_provisioned": false
+  },
+  "build_lab": {
+    "worker": "ai-mls-m4-build-lab",
+    "public_urls": false,
+    "business_bindings": false,
+    "pause_and_resume_api_readback": true,
+    "automatic_build": "ea0ecdc7-ef14-4916-99f0-8e48aa172bb6",
+    "automatic_build_sha": "caa91dbec76bcd4160fbfb2f80a192a81b6dd1b0",
+    "automatic_build_result": "success",
+    "pause_does_not_cancel_inflight_build": true,
+    "manual_commit_hash_api": "authentication_error_no_permission_expansion",
+    "retry_build": "3474751b-ec1b-4046-aa26-3e3a51871c87",
+    "retry_same_sha_result": "success_while_auto_disabled"
+  },
+  "checks": {
+    "api_passed": 20,
+    "recovery_passed": 23,
+    "typecheck_exit": 0,
+    "build_exit": 0,
+    "changed_standalone_js_lint_exit": 0,
+    "baseline_full_lint_errors": 21,
+    "browser_passed": 2
+  },
+  "boundaries": {
+    "production_backup_enabled": false,
+    "main_merged": false,
+    "production_release_configuration_changed": false,
+    "access_changed": false,
+    "workers_plan_changed": false,
+    "sites_freeze": "blocked",
+    "final_natural_12h_rotation": "pending_observation",
+    "raw_metadata_screenshots_email_ids": "private_local_only"
+  },
+  "candidate_release_config": {
+    "live_db_r2_access_date_match": true,
+    "keep_vars": true,
+    "model_secret_value_copied": false,
+    "wrangler_dry_run_exit": 0
+  }
+}

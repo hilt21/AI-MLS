@@ -1,0 +1,38 @@
+{
+  "stage": "M2",
+  "date": "2026-10-18",
+  "head": "566322e00ac0f78040be709bab6b724326665ace",
+  "pr": "https://github.com/hilt21/AI-MLS/pull/1",
+  "merged": false,
+  "main_unchanged": "ebc287a71823836b2711b1ff47ac0cd0a8b381a0",
+  "cloudflare_build": "33d269fb-a0bc-4793-a2d0-eab9f2cb3d14",
+  "preview_deployment": "207d08f0-502a-49e3-9009-bdc4151dcb59",
+  "browser_run": 39096000490,
+  "local_browser_passes": 2,
+  "api_passes": 19,
+  "required_checks": [
+    "Workers Builds: ai-mls",
+    "Browser acceptance",
+    "AI-MLS / integration acceptance"
+  ],
+  "all_checks": "success",
+  "missing_acceptance_blocks_merge_verified": true,
+  "real_integration_scope": "tooling release; read-only Preview Access and retained synthetic DB/R2 image",
+  "real_model": "not_applicable_to_changes_not_run",
+  "real_two_account": "not_applicable_to_changes_not_run",
+  "production": {
+    "worker_settings_unchanged": true,
+    "deployments_unchanged": true,
+    "build_settings_unchanged": true,
+    "access_apps_unchanged": true
+  },
+  "ci_exception": {
+    "native_libatk_missing": true,
+    "native_root_install_denied": true,
+    "github_actions": "browser-only, contents read, no secrets, no deploy"
+  },
+  "sites_freeze": "blocked",
+  "human_merge_approval": "still required; shared identity is procedural boundary",
+  "merge_state": "CLEAN",
+  "review_thread": "resolved with explicit no-model scope and dedicated future test credentials"
+}

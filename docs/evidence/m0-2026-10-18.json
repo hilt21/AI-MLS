@@ -1,0 +1,55 @@
+{
+  "stage": "M0",
+  "date": "2026-10-18",
+  "source_commit": "ebc287a71823836b2711b1ff47ac0cd0a8b381a0",
+  "environment": {
+    "node": "24.22.0",
+    "pnpm": "11.25.0",
+    "os": "Darwin arm64",
+    "credentials_passed": false
+  },
+  "steps": [
+    {
+      "command": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "typecheck"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "source_clean_after_build": true,
+  "production_unchanged": true,
+  "permission_findings": "existing GitHub/build credentials broader than required; not modified",
+  "historical_boundary": "M0 before M2 branch protection; later reports supersede gate status",
+  "raw_evidence": "private local evidence, not published",
+  "limits": [
+    "macOS arm64 reproduction on Node 24.22.0; original Cloudflare build used Node 24.21.0 on a different platform",
+    "No byte-identical production bundle comparison",
+    "No browser E2E, live model call, remote D1/R2 query or production write",
+    "Notification catalog/eligibility is not configured alert or delivery proof",
+    "No production settings, credentials or permissions changed"
+  ]
+}
