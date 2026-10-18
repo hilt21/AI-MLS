@@ -2,7 +2,7 @@
 export async function checkApplication(fetcher, request) {
   try {
     const response = await fetcher.fetch(new Request(request, {
-      method: 'GET', redirect: 'error', signal: AbortSignal.timeout(10_000),
+      method: 'GET', redirect: 'manual', signal: AbortSignal.timeout(10_000),
     }));
     if (response.status !== 200) return false;
     const body = await response.json();

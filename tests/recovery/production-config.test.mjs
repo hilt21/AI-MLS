@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { productionConfig } from '../../ops/prepare-production-config.mjs';
 import { checkApplication } from '../../ops/application-health.mjs';
+import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
+import { readFile } from 'node:fs/promises';
 
 const env = { M4_ACCOUNT_ID: 'a'.repeat(32), M4_PREVIEW_DATABASE_ID: '11111111-1111-4111-8111-111111111111', M4_PRODUCTION_DATABASE_ID: '22222222-2222-4222-8222-222222222222', M4_ALERT_TO: 'verified@example.test', M4_ALERT_FROM: 'alerts@example.test' };
 test('production proposal is inactive, private and distinct from pilot sources/archive', () => {
@@ -22,4 +24,10 @@ test('health distinguishes dependency readiness from authentication errors, redi
   assert.equal(await checkApplication({ fetch: async () => Response.json({ ready: true }) }, 'https://test.invalid/api/health'), false);
   assert.equal(await checkApplication({ fetch: async () => { throw new Error('dependency'); } }, 'https://test.invalid/api/health'), false);
   assert.equal(await checkApplication({ fetch: async () => Response.json({ ready: true, checks: { database: true, images: true } }) }, 'https://test.invalid/api/health'), true);
+});
+test('application health request is compatible with the actual Workers runtime', async () => {
+  const helper = await readFile('ops/application-health.mjs', 'utf8');
+  const mf = new Miniflare(convertV4MiniflareOptions({ workers: [{ name: 'health-runtime', modules: true, compatibilityDate: '2026-09-25', script: helper + '\nexport default {async fetch(){return Response.json({healthy:await checkApplication({fetch:async()=>Response.json({ready:true,checks:{database:true,images:true}})},"https://test.invalid/api/health")})}}' }] }));
+  try { assert.equal((await (await mf.dispatchFetch('https://local.invalid/')).json()).healthy, true); }
+  finally { await mf.dispose(); }
 });
