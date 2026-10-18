@@ -144,6 +144,9 @@ importers:
       json-rpc-2.0:
         specifier: 1.7.1
         version: 1.7.1
+      miniflare:
+        specifier: 5.20260918.0-alpha
+        version: 5.20260918.0-alpha(@types/node@22.19.19)
       raw-body:
         specifier: 3.0.2
         version: 3.0.2
