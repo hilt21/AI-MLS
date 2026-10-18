@@ -2,7 +2,7 @@
 
 ## 自动检查
 
-每个拟合并提交必须通过 Cloudflare 应用发布的 `Workers Builds: ai-mls`，包含配置校验、API 回归、类型检查、构建、手机与桌面 Chromium 的模拟模型闭环。main 必需检查固定 Cloudflare 应用来源并要求分支与 main 同步。缺失或失败时停止合并；新提交需重新通过。
+每个拟合并提交必须通过两个检查：Cloudflare 应用发布的 `Workers Builds: ai-mls`，包含配置校验、API 回归、类型检查、构建、手机与桌面 Chromium 的模拟模型闭环。main 必需检查固定 Cloudflare 应用来源并要求分支与 main 同步。另一个必需检查 `AI-MLS / integration acceptance` 由在线验收者完成范围判定、真实集成及 PR 证据后，以当前 head 的 commit status 记录；未验收保持缺失或 pending。该状态使用 GitHub 写权限，不能从技术上区分同一身份的人与 Agent。缺失或失败时停止合并；新提交需重新通过。
 
 本地准备：Node 24、固定 pnpm，执行 `pnpm install --frozen-lockfile && pnpm build`、`pnpm exec playwright install chromium`、`pnpm test:browser`。测试只运行本地 Worker，重建本地 DB/R2 配置和临时数据目录；身份及模型在测试入口模拟，不验证线上 JWT 或真实模型。失败截图/trace、JSON 结果在 `outputs/browser/`；云端构建日志保存结果，需长期保留的失败附件人工脱敏后附到 PR。
 
@@ -26,7 +26,7 @@
 
 仓库当前仅有 hilt21 管理员，Agent 也使用相同身份创建 PR。GitHub 作者不能批准自己的 PR，因此本阶段采用用户确认的方式：技术门禁强制检查与 PR 流程，用户在会话中批准具体 PR/head 后才可合并；不把自动检查、模板勾选或 Agent 审查当作用户批准。
 
-单一身份不能在 GitHub 技术层区分人和 Agent。管理员的规则管理权限仅作应急通道；若必须调整或绕过，先取得用户明确批准，在 PR 记录原规则、原因、批准、实际合并 SHA 和恢复结果。日常合并不绕过检查。以后引入独立提交身份/审查人时，才启用独立 approving review，不提前制造无法自审的死锁。
+单一身份不能在 GitHub 技术层区分人和 Agent。当前规则也对管理员强制生效，required approving review count 为 0，保留 PR 要求并避免自审死锁。管理员的规则管理权限仅作应急通道；若必须调整或绕过，先取得用户明确批准，在 PR 记录原规则、原因、批准、实际合并 SHA 和恢复结果。日常合并不绕过检查。以后引入独立提交身份/审查人时，才启用独立 approving review，不提前制造无法自审的死锁。
 
 ## 发布边界
 
