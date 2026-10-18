@@ -2,9 +2,9 @@
 
 ## 自动检查
 
-每个拟合并提交必须通过两个检查：Cloudflare 应用发布的 `Workers Builds: ai-mls`，包含配置校验、API 回归、类型检查、构建、手机与桌面 Chromium 的模拟模型闭环。main 必需检查固定 Cloudflare 应用来源并要求分支与 main 同步。另一个必需检查 `AI-MLS / integration acceptance` 由在线验收者完成范围判定、真实集成及 PR 证据后，以当前 head 的 commit status 记录；未验收保持缺失或 pending。该状态使用 GitHub 写权限，不能从技术上区分同一身份的人与 Agent。缺失或失败时停止合并；新提交需重新通过。
+每个拟合并提交必须通过三个检查：Cloudflare 应用发布的 `Workers Builds: ai-mls`，包含配置校验、API 回归、类型检查、构建；以及 GitHub Actions 的 `Browser acceptance`，验证手机与桌面 Chromium 模拟模型闭环。main 必需检查固定 Cloudflare 应用来源并要求分支与 main 同步。第三个必需检查 `AI-MLS / integration acceptance` 由在线验收者完成范围判定、真实集成及 PR 证据后，以当前 head 的 commit status 记录；未验收保持缺失或 pending。该状态使用 GitHub 写权限，不能从技术上区分同一身份的人与 Agent。缺失或失败时停止合并；新提交需重新通过。
 
-本地准备：Node 24、固定 pnpm，执行 `pnpm install --frozen-lockfile && pnpm build`、`pnpm exec playwright install chromium`、`pnpm test:browser`。测试只运行本地 Worker，重建本地 DB/R2 配置和临时数据目录；身份及模型在测试入口模拟，不验证线上 JWT 或真实模型。失败截图/trace、JSON 结果在 `outputs/browser/`；云端构建日志保存结果，需长期保留的失败附件人工脱敏后附到 PR。
+本地准备：Node 24、固定 pnpm，执行 `pnpm install --frozen-lockfile && pnpm build`、`pnpm exec playwright install chromium`、`pnpm test:browser`。测试只运行本地 Worker，重建本地 DB/R2 配置和临时数据目录；身份及模型在测试入口模拟，不验证线上 JWT 或真实模型。失败截图/trace、JSON 结果在 `outputs/browser/`；GitHub Actions 保留 head 命名的验收附件 7 天；需长期保留的失败证据人工脱敏后附到 PR。
 
 ## 按改动选择真实集成
 
@@ -31,3 +31,7 @@
 ## 发布边界
 
 当前生产仍使用原有构建/发布命令；本阶段只调整 Preview 检查和 GitHub 门禁。main 合并会触发现有生产自动发布，M3 恢复准备及 M4 授权完成前保持 PR 未合并。Sites 冻结继续等待资源映射。
+
+## 浏览器 CI 的已验证例外
+
+Cloudflare Builds 构建镜像缺少 Chromium 的 libatk，官方 install --with-deps 需 root；本轮原生构建的 su 提权被拒（构建 491fdf94-1bf5-49d5-a074-f2e3ead53c32）。因此仅浏览器验收改用 GitHub Actions。工作流仅 contents:read、checkout 不持久化凭据，不配置生产 Secrets，没有部署步骤；Cloudflare Builds 保持唯一自动部署者。Workflow、依赖或测试入口变化时必须重新验收此边界。Preview 基础模板更新不会回写已创建分支，需单独核对分支实际命令。
