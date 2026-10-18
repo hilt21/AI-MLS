@@ -1,0 +1,752 @@
+{
+  "date": "2026-10-18",
+  "scope": "synthetic printed functional screening; not real student or photo accuracy acceptance",
+  "business_commit": "aedc5b2b23577b621fc28caca161bccdaf7ca64e",
+  "documentation_base": "436e30fb27a28d3decd51be4d99af6720248b95f",
+  "preview_deployment": "9d76141d-5628-4e1d-9084-ced6668a07ff",
+  "model": "MiniMax-M3",
+  "base_url": "https://api.minimax.cn/v1",
+  "recognition_source_sha256": "20022f36dc92395852a640394d228bb80f4df621a6abd5ba421a0a7dfccefddb",
+  "source_images": "1500x850 synthetic PNG rendered with macOS AppKit; browser reencoded JPEG quality 0.88",
+  "timing_scope": "Browser network request-to-response headers for E03-E19 and E13 retry; includes application/storage/network/model, not provider-only latency. E01/E02/E20 timings unavailable.",
+  "calls": 22,
+  "first_ready": 18,
+  "samples": [
+    {
+      "expected_answer": "45",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E01",
+      "question": "小学数学：计算 17 + 28 = ?",
+      "synthetic": true,
+      "input_sha256": "4619e9c007eadf0494319c3ee72801f0c92cfed24ccff178e7a1a19902bd8928",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算 17 + 28 = ?",
+        "question_markdown": "计算 $17 + 28 = ?$",
+        "correct_answer": "45",
+        "solution_markdown": "使用竖式或凑十法计算：\n\n$$17 + 28 = 45$$\n\n过程：个位 $7 + 8 = 15$，写 5 进 1；十位 $1 + 2 + 1 = 4$，得 45。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 1,
+        "knowledge_points": [
+          "两位数加法（不进位与进位）",
+          "凑十法",
+          "竖式计算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": []
+    },
+    {
+      "expected_answer": "63",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E02",
+      "question": "小学数学：计算 100 - 37 = ?",
+      "synthetic": true,
+      "input_sha256": "5e786dc9911f2826fef4132c853327120c7f5a1730d19aba0f58b568048461f7",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算 100 - 37 =？",
+        "question_markdown": "计算 $100 - 37 = ?$",
+        "correct_answer": "63",
+        "solution_markdown": "$100 - 37 = 63$\n\n**计算过程：**\n- 个位：$0 - 7$ 不够减，需从十位借；十位也是 $0$，需从百位借 $1$；\n- 此时十位为 $10$，先借 $1$ 给个位，个位变为 $10 - 7 = 3$；\n- 十位剩下 $9$，$9 - 3 = 6$；\n- 百位 $1$ 已借出，结果为 $63$。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 2,
+        "knowledge_points": [
+          "100以内退位减法",
+          "三位数减两位数",
+          "借位减法运算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": []
+    },
+    {
+      "expected_answer": "6.35",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E03",
+      "question": "小学数学：计算 3.6 + 2.75 = ?",
+      "synthetic": true,
+      "input_sha256": "2c5947585960751ac8447c947520ca0df53abe4be361c776b88b409edaf5ecec",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算 3.6 + 2.75 = ?",
+        "question_markdown": "计算 $3.6 + 2.75 = ?$",
+        "correct_answer": "6.35",
+        "solution_markdown": "将两个加数的小数位数对齐：\n\n$$\\begin{array}{r}3.60\\\\+2.75\\\\\\hline6.35\\end{array}$$\n\n所以 $3.6 + 2.75 = 6.35$。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 4,
+        "knowledge_points": [
+          "小数加法",
+          "小数位数对齐",
+          "小数的竖式计算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 6.153
+        }
+      ]
+    },
+    {
+      "expected_answer": "312",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E04",
+      "question": "小学数学：计算 24 × 13 = ?",
+      "synthetic": true,
+      "input_sha256": "ae9fc43cb69c01633dff8cfc3a9f3d4a8f59258b2e5a518c9326b816f1f47438",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算 24 × 13 = ?",
+        "question_markdown": "计算 $24 \\times 13 = ?$",
+        "correct_answer": "312",
+        "solution_markdown": "$$24 \\times 13 = 24 \\times (10 + 3) = 240 + 72 = 312$$\n\n竖式计算：\n```\n   24\n × 13\n ────\n   72\n  240\n ────\n  312\n```\n\n逐位相乘：\n- 个位：$4 \\times 3 = 12$，写 2 进 1\n- 十位：$2 \\times 3 = 6$，加进位 1 得 7\n- 十位与十位相乘：$4 \\times 1 = 4$（个位对齐十位）\n- 百位：$2 \\times 1 = 2$（个位对齐十位）\n- 错位相加：$72 + 240 = 312$",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 4,
+        "knowledge_points": [
+          "两位数乘两位数的笔算乘法",
+          "竖式计算与进位",
+          "乘法分配律的简单应用"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [
+        "解析将个位乘十位误称为十位与十位相乘；数值过程和答案正确。"
+      ],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.095
+        }
+      ]
+    },
+    {
+      "expected_answer": "12",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E05",
+      "question": "小学数学：计算 144 ÷ 12 = ?",
+      "synthetic": true,
+      "input_sha256": "44292966cd90f157e87f1ac0dea70800c896f4aab0c99a58b32d9e032290da11",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算144÷12＝？",
+        "question_markdown": "计算 $144 \\div 12 = ?$",
+        "correct_answer": "12",
+        "solution_markdown": "$144 \\div 12 = 12$",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 5,
+        "knowledge_points": [
+          "三位数除以两位数的除法运算",
+          "整数除法计算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.539
+        }
+      ]
+    },
+    {
+      "expected_answer": "5/6",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E06",
+      "question": "小学数学：计算 1/2 + 1/3 = ?",
+      "synthetic": true,
+      "input_sha256": "ed9a7698aece97a6502e80d0368732217531f27e52fe4d0bfb81d2001659091c",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：计算 1/2 + 1/3 =？",
+        "question_markdown": "计算 $\\dfrac{1}{2} + \\dfrac{1}{3} = ?$",
+        "correct_answer": "5/6",
+        "solution_markdown": "$$\\dfrac{1}{2} + \\dfrac{1}{3} = \\dfrac{3}{6} + \\dfrac{2}{6} = \\dfrac{5}{6}$$",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 5,
+        "knowledge_points": [
+          "分数的加法运算",
+          "通分",
+          "异分母分数相加"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.32
+        }
+      ]
+    },
+    {
+      "expected_answer": "3/2",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E07",
+      "question": "小学数学：计算 2又1/4 - 3/4 = ?",
+      "synthetic": true,
+      "input_sha256": "d83a53c33b98e737ba3c1538a19a84debfb0128a6f79f7dc740df78b1b5da6a2",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：带分数减真分数的计算",
+        "question_markdown": "计算 $2\\dfrac{1}{4} - \\dfrac{3}{4} = ?$",
+        "correct_answer": "$1\\dfrac{1}{2}$（或 $\\dfrac{3}{2}$）",
+        "solution_markdown": "**方法一：化为假分数**\n\n将带分数化为假分数：\n\n$$2\\dfrac{1}{4} = \\dfrac{2 \\times 4 + 1}{4} = \\dfrac{9}{4}$$\n\n再进行计算：\n\n$$\\dfrac{9}{4} - \\dfrac{3}{4} = \\dfrac{9-3}{4} = \\dfrac{6}{4} = \\dfrac{3}{2} = 1\\dfrac{1}{2}$$\n\n**方法二：整数部分与分数部分分别相减**\n\n由于 $\\dfrac{1}{4} < \\dfrac{3}{4}$，分数部分不够减，需要从整数部分借 1（即 $\\dfrac{4}{4}$）：\n\n$$2\\dfrac{1}{4} = 1 + \\dfrac{4}{4} + \\dfrac{1}{4} = 1\\dfrac{5}{4}$$\n\n$$\\dfrac{5}{4} - \\dfrac{3}{4} = \\dfrac{2}{4} = \\dfrac{1}{2}$$\n\n$$1\\dfrac{1}{2} - 0 = 1\\dfrac{1}{2}$$\n\n所以 $2\\dfrac{1}{4} - \\dfrac{3}{4} = 1\\dfrac{1}{2}$。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 5,
+        "knowledge_points": [
+          "带分数的概念",
+          "带分数与假分数的互化",
+          "同分母分数减法",
+          "约分",
+          "带分数减法（分数部分不够减需借位）"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [
+        "答案含 LaTeX，当前参考答案显示路径未用数学渲染；解析含不规范带分数写法和冗余步骤。"
+      ],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 6.958
+        }
+      ]
+    },
+    {
+      "expected_answer": "30",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E08",
+      "question": "小学数学：200 的 15% 是多少？",
+      "synthetic": true,
+      "input_sha256": "6d1f1743c831d04c4bf73dbd527c573eccd4949bcfe51a30b7feee1cd7fc0abb",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "200的15%是多少",
+        "question_markdown": "小学数学：200 的 15% 是多少？",
+        "correct_answer": "30",
+        "solution_markdown": "求一个数的百分之几是多少，用乘法计算。\n\n$$200 \\times 15\\% = 200 \\times 0.15 = 30$$\n\n答：200 的 15% 是 30。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 6,
+        "knowledge_points": [
+          "百分数的意义",
+          "求一个数的百分之几是多少用乘法",
+          "百分数化为小数",
+          "小数乘法计算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.215
+        }
+      ]
+    },
+    {
+      "expected_answer": "15",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E09",
+      "question": "小学数学：甲乙人数比为 3:5，共40人。甲多少人？",
+      "synthetic": true,
+      "input_sha256": "7c6573a1ee950d530ac1bc9421ff676ac52a5346e4a5449b9fab01bf84f3fbfe",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：甲乙人数比为3:5，共40人，甲多少人？",
+        "question_markdown": "小学数学：甲乙人数比为 $3:5$，共 $40$ 人。甲多少人？",
+        "correct_answer": "15人",
+        "solution_markdown": "总份数为 $3+5=8$ 份。\n\n每份人数：$40 \\div 8 = 5$（人）。\n\n甲人数：$5 \\times 3 = 15$（人）。\n\n答：甲有 $15$ 人。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 5,
+        "knowledge_points": [
+          "比的应用",
+          "按比例分配"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.545
+        }
+      ]
+    },
+    {
+      "expected_answer": "29",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E10",
+      "question": "小学数学：每盒12支铅笔，买3盒，送出7支，还剩多少支？",
+      "synthetic": true,
+      "input_sha256": "e2ce66635ed051065ca24aceb1374dd196503463c17b536e02416c434cb55c14",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：每盒12支铅笔，买3盒，送出7支，还剩多少支？",
+        "question_markdown": "每盒12支铅笔，买3盒，送出7支，还剩多少支？",
+        "correct_answer": "29支",
+        "solution_markdown": "$12 \\times 3 - 7 = 36 - 7 = 29$（支）\n\n**答：还剩29支。**",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 2,
+        "knowledge_points": [
+          "乘减混合运算",
+          "乘法应用题",
+          "连续减去一步运算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 7.647
+        }
+      ]
+    },
+    {
+      "expected_answer": "x=5",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E11",
+      "question": "初中数学：解方程 3x + 5 = 20。",
+      "synthetic": true,
+      "input_sha256": "aade458aa6ed20ab71298fdc30654b53ef8bba17bf360af3890482ad96d5443b",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "解一元一次方程",
+        "question_markdown": "解方程：$3x + 5 = 20$。",
+        "correct_answer": "$x = 5$",
+        "solution_markdown": "$3x + 5 = 20$\n\n$3x = 20 - 5$\n\n$3x = 15$\n\n$x = 5$",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 7,
+        "knowledge_points": [
+          "一元一次方程的解法",
+          "等式的基本性质",
+          "移项与合并同类项"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.871
+        }
+      ]
+    },
+    {
+      "expected_answer": "x=2或3",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E12",
+      "question": "初中数学：解方程 x² - 5x + 6 = 0。",
+      "synthetic": true,
+      "input_sha256": "2c65152fc96d87937c012b47e204e93e40d90eee83d041f290a3fae177e032fc",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "解方程 x² - 5x + 6 = 0",
+        "question_markdown": "初中数学：解方程 $x^2 - 5x + 6 = 0$。",
+        "correct_answer": "$x_1 = 2,\\ x_2 = 3$",
+        "solution_markdown": "对方程 $x^2 - 5x + 6 = 0$ 进行因式分解。\n\n观察常数项 6 和一次项系数 -5，可将方程左边分解为两个因式的乘积。\n\n设 $x^2 - 5x + 6 = (x - a)(x - b)$，则 $a + b = 5$，$ab = 6$，满足条件的 $a, b$ 为 2 和 3。\n\n故 $x^2 - 5x + 6 = (x - 2)(x - 3) = 0$。\n\n由 $(x - 2)(x - 3) = 0$，得 $x - 2 = 0$ 或 $x - 3 = 0$，\n\n所以 $x_1 = 2$，$x_2 = 3$。",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 9,
+        "knowledge_points": [
+          "一元二次方程的解法",
+          "因式分解法解一元二次方程",
+          "十字相乘法"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.051
+        }
+      ]
+    },
+    {
+      "expected_answer": "14",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E13",
+      "question": "初中数学：计算 (-3) × (-4) + 2。",
+      "synthetic": true,
+      "input_sha256": "6041b563dca1dabd1d8e8fe81475e8a7d53627a4d946cb6ce9c45a1698820d34",
+      "first_status": "failed",
+      "retry_status": "ready",
+      "observed_final": {
+        "title": "初中数学：计算 (−3)×(−4)+2",
+        "question_markdown": "计算 $(-3) \\times (-4) + 2$。",
+        "correct_answer": "14",
+        "solution_markdown": "根据有理数运算法则，先算乘法，再算加法。\n\n$(-3) \\times (-4) = 12$（负负得正）\n\n$12 + 2 = 14$",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 7,
+        "knowledge_points": [
+          "有理数的乘法法则",
+          "有理数的加法运算",
+          "有理数混合运算的运算顺序"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.75
+        },
+        {
+          "attempt": "retry",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.061
+        }
+      ]
+    },
+    {
+      "expected_answer": "15",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E14",
+      "question": "初中数学：计算 2³ + √49。",
+      "synthetic": true,
+      "input_sha256": "d9eb48cb35bdd20b60efe2631a356431fc0863886ea7e83cf88b12a6ad950915",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "初中数学：计算 2^3 + √49。",
+        "question_markdown": "计算 $2^3 + \\sqrt{49}$。",
+        "correct_answer": "15",
+        "solution_markdown": "1. 计算 $2^3 = 2 \\times 2 \\times 2 = 8$。\n2. 计算 $\\sqrt{49} = 7$（因为 $7^2 = 49$）。\n3. 求和：$8 + 7 = 15$。",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 7,
+        "knowledge_points": [
+          "有理数的乘方运算",
+          "算术平方根的概念与计算",
+          "实数的加减运算"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 4.386
+        }
+      ]
+    },
+    {
+      "expected_answer": "5",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E15",
+      "question": "初中数学：y = 2x - 3，当 x = 4 时，y = ?",
+      "synthetic": true,
+      "input_sha256": "e3c46f85ea419a72128aedc580dfdae318bb303632bddb2e4997dd0ec5e51192",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "初中数学：求函数值",
+        "question_markdown": "已知 $y = 2x - 3$，当 $x = 4$ 时，求 $y$ 的值。",
+        "correct_answer": "y = 5",
+        "solution_markdown": "将 $x = 4$ 代入 $y = 2x - 3$：\n\n$$y = 2 \\times 4 - 3 = 8 - 3 = 5$$\n\n所以 $y = 5$。",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 7,
+        "knowledge_points": [
+          "代入求值",
+          "一次函数",
+          "代数式求值"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.818
+        }
+      ]
+    },
+    {
+      "expected_answer": "x=4,y=3",
+      "expected_image_required": false,
+      "expected_wrong_answer": "",
+      "id": "E16",
+      "question": "初中数学：解方程组 x+y=7，x-y=1。",
+      "synthetic": true,
+      "input_sha256": "ab75ea53df22eb885508b7a2be4184f161b1baf8c48ce0213e3c419e4c71b708",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "解二元一次方程组",
+        "question_markdown": "解方程组：\n$$\\begin{cases} x+y=7 \\\\ x-y=1 \\end{cases}$$",
+        "correct_answer": "$\\begin{cases} x=4 \\\\ y=3 \\end{cases}$",
+        "solution_markdown": "**解法（加减消元法）：**\n\n将两式相加，消去 $y$：\n$$(x+y)+(x-y)=7+1$$\n$$2x=8$$\n$$x=4$$\n\n将 $x=4$ 代入 $x+y=7$：\n$$4+y=7$$\n$$y=3$$\n\n所以方程组的解为 $\\begin{cases} x=4 \\\\ y=3 \\end{cases}$。",
+        "student_wrong_answer": "",
+        "stage": "junior",
+        "grade": 7,
+        "knowledge_points": [
+          "二元一次方程组的概念",
+          "加减消元法解方程组",
+          "代入消元法解方程组",
+          "方程组的解的验证"
+        ],
+        "error_type": "unknown",
+        "image_required": false
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.488
+        }
+      ]
+    },
+    {
+      "expected_answer": "12平方厘米",
+      "expected_image_required": true,
+      "expected_wrong_answer": "",
+      "id": "E17",
+      "question": "小学数学：如图，三角形底6厘米，高4厘米，求面积。",
+      "synthetic": true,
+      "input_sha256": "f5b1d342ae0d87cf7d6822c3339ba0ad55fc9df0f4c4562182b399d33bb40472",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：三角形面积计算",
+        "question_markdown": "如图，三角形的底是 6 厘米，高是 4 厘米，求三角形的面积。",
+        "correct_answer": "12 平方厘米",
+        "solution_markdown": "根据三角形面积公式：\n\n$$S = \\frac{1}{2} \\times 底 \\times 高$$\n\n代入数据：\n\n$$S = \\frac{1}{2} \\times 6 \\times 4 = 12 \\text{（平方厘米）}$$\n\n答：三角形的面积是 12 平方厘米。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 5,
+        "knowledge_points": [
+          "三角形面积公式 S = 底 × 高 ÷ 2",
+          "面积单位的认识与使用",
+          "图形与几何基础"
+        ],
+        "error_type": "unknown",
+        "image_required": true
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.667
+        }
+      ]
+    },
+    {
+      "expected_answer": "22厘米",
+      "expected_image_required": true,
+      "expected_wrong_answer": "",
+      "id": "E18",
+      "question": "小学数学：如图，长方形长8厘米，宽3厘米，求周长。",
+      "synthetic": true,
+      "input_sha256": "b5c93f3594f144f7c603178f6bc8a5e99e5fb14c87dd4061b9f06cd26c9ed816",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "长方形周长的计算",
+        "question_markdown": "如图，长方形长 8 厘米，宽 3 厘米，求周长。",
+        "correct_answer": "22厘米",
+        "solution_markdown": "长方形的周长公式为：$C = 2 \\times (\\text{长} + \\text{宽})$\n\n将数据代入公式：\n\n$$C = 2 \\times (8 + 3) = 2 \\times 11 = 22 \\text{（厘米）}$$\n\n答：长方形的周长是 22 厘米。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 3,
+        "knowledge_points": [
+          "长方形周长的意义",
+          "长方形周长公式",
+          "周长的计算方法",
+          "长度单位厘米"
+        ],
+        "error_type": "unknown",
+        "image_required": true
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.307
+        }
+      ]
+    },
+    {
+      "expected_answer": "25平方厘米",
+      "expected_image_required": true,
+      "expected_wrong_answer": "",
+      "id": "E19",
+      "question": "小学数学：如图，正方形边长5厘米，求面积。",
+      "synthetic": true,
+      "input_sha256": "db43a8b538182a0cb901f0a2451e1d9c3059b5348f79b7102964ecfc897bcb27",
+      "first_status": "ready",
+      "retry_status": null,
+      "observed_final": {
+        "title": "小学数学：正方形面积计算",
+        "question_markdown": "如图，正方形边长 5 厘米，求面积。\n\n```\n    ┌─────────┐\n    │         │\n    │         │\n    │         │\n    └─────────┘\n      5 cm\n```",
+        "correct_answer": "25 平方厘米",
+        "solution_markdown": "正方形的面积 = 边长 × 边长\n\n$S = a \\times a = 5 \\times 5 = 25$（平方厘米）\n\n答：这个正方形的面积是 25 平方厘米。",
+        "student_wrong_answer": "",
+        "stage": "primary",
+        "grade": 3,
+        "knowledge_points": [
+          "正方形面积的计算公式",
+          "面积单位（平方厘米）的认识"
+        ],
+        "error_type": "unknown",
+        "image_required": true
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": true,
+      "review_notes": [],
+      "measured_requests": [
+        {
+          "attempt": "first",
+          "http_status": 200,
+          "upload_or_retry_seconds": 5.202
+        }
+      ]
+    },
+    {
+      "expected_answer": "25",
+      "expected_image_required": false,
+      "expected_wrong_answer": "24",
+      "id": "E20",
+      "question": "小学数学：计算 16 + 9 = ?\n学生作答：24（错误）。请写出正确答案。",
+      "synthetic": true,
+      "input_sha256": "b5a79100fda27a2c951f9312284e5a09451e30a57121faaec4a645cd1e919a8d",
+      "first_status": "failed",
+      "retry_status": "ready",
+      "observed_final": {
+        "title": "小学数学：计算 16 + 9 = ?",
+        "question_markdown": "计算 $16 + 9 = ?$\n\n学生作答：24（错误）。请写出正确答案。",
+        "correct_answer": "25",
+        "student_wrong_answer": "24",
+        "stage": "primary",
+        "grade": 1,
+        "knowledge_points": [
+          "20以内进位加法",
+          "凑十法",
+          "整数加法运算"
+        ],
+        "error_type": "calculation",
+        "image_required": false,
+        "recognition_notes": "题目为简单的20以内进位加法（16+9）。学生作答24被标注为错误，正确答案应为25，疑似计算失误（差1）。",
+        "solution_markdown": "$16 + 9 = 25$\n\n**解析**：将 9 拆分为 4 和 5，先算 $16 + 4 = 20$，再算 $20 + 5 = 25$。"
+      },
+      "critical_math_and_answer_correct": true,
+      "unknown_cause_preserved": false,
+      "review_notes": [
+        "模型推断 calculation 与疑似计算失误，图片不支持错因；应保持 unknown。知识点将16+9称为20以内进位加法也需人工核对。"
+      ],
+      "measured_requests": []
+    }
+  ]
+}
