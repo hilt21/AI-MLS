@@ -41,3 +41,5 @@ D1 schema 位于 `db/schema.ts`，迁移位于 `drizzle/`。修改 schema 后运
 隔离备份、邮件告警、恢复和有限回滚的使用与证据见 [M3 验证报告](docs/M3_VERIFICATION.md)；生产接入尚未执行。
 
 生产规模核查、独立容量与健康告警验证见 [M4-A 验收](docs/M4A_VERIFICATION.md)；当前 CPU 预算门槛未通过，生产备份与发布切换均未启用。
+
+当前维持免费套餐与简单备份、失败通知、人工恢复；分片和高级自动化暂缓，CPU 可靠性缺口保留。下一重点见[学生使用、识别与学习闭环审计](docs/STUDENT_WORKFLOW_AUDIT.md)，生产接入继续暂缓。
