@@ -8,9 +8,10 @@ const json=(v:unknown,s=200)=>Response.json(v,{status:s,headers:{'Cache-Control'
 async function handler(req:Request){
  try{
  const user=await getChatGPTUser();const path=new URL(req.url).pathname.replace('/api/','');
- if(path==='auth/me')return json({authenticated:!!user,email:user?.email});
+ if(path==='auth/me')return json({authenticated:!!user,userId:user?.userId,email:user?.email});
  if(!user)return json({error:'请先登录'},401);
  if(req.method!=='GET'&&req.headers.get('origin')!==new URL(req.url).origin)return json({error:'请求来源无效'},403);
+ const expectedAccount=req.headers.get('x-ai-mls-account');if(expectedAccount&&expectedAccount!==user.userId)return json({error:'账号已变化，请刷新后进入当前账号',code:'ACCOUNT_CHANGED'},409);
  const db=env.DB;const bucket=env.BUCKET;if(!db||!bucket)return json({error:"存储服务尚未就绪"},503);const owner=user.userId;const now=new Date().toISOString();
  if(path==='health'&&req.method==='GET'){try{await db.prepare('SELECT 1 AS ready').first();await bucket.list({limit:1});return json({ready:true,checks:{database:true,images:true}})}catch{return json({ready:false},503)}}
  const rows=await db.prepare('SELECT * FROM questions WHERE owner=? ORDER BY created DESC').bind(owner).all<any>();

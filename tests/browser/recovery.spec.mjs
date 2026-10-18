@@ -108,3 +108,58 @@ test('failed initial load never reports no due questions and can retry', async (
     await expect(page.getByRole('heading', { name: '初次同步恢复', exact: true })).toBeVisible();
   } finally { await context.close(); }
 });
+
+for (const reopenSame of [false, true]) test(`follow-up: delayed save preserves ${reopenSame ? 'reopened same' : 'another'} editor session`, async ({browser,baseURL},info)=>{
+  const context=await browser.newContext({...info.project.use,baseURL,extraHTTPHeaders:{'x-e2e-user':`editor-session-${reopenSame}-${info.project.name}`}});let release;
+  try{
+    await seed(context,baseURL,'编辑 A');await seed(context,baseURL,'编辑 B');const page=await context.newPage();await page.goto('/');await page.getByRole('button',{name:/错题库/}).click();
+    const card=title=>page.locator('.question-card').filter({has:page.getByRole('heading',{name:title,exact:true})});
+    await card('编辑 A').getByRole('button',{name:'查看 / 编辑',exact:true}).click();await page.getByLabel('标题',{exact:true}).fill('A 已保存');
+    const held=new Promise(resolve=>release=resolve);let requested;const seen=new Promise(resolve=>requested=resolve);await page.route('**/api/questions',async route=>{requested();await held;await route.continue();});
+    await page.getByRole('button',{name:'确认并加入复习 →'}).click();await seen;
+    await page.getByRole('button',{name:'← 返回错题列表',exact:true}).click();await card(reopenSame?'编辑 A':'编辑 B').getByRole('button',{name:'查看 / 编辑',exact:true}).click();
+    await page.getByLabel('标题',{exact:true}).fill('新会话的未保存草稿');const synced=page.waitForResponse(r=>r.url().endsWith('/api/questions'));release();await synced;
+    await expect(page.getByLabel('标题',{exact:true})).toHaveValue('新会话的未保存草稿');await page.getByRole('button',{name:'↻ 同步',exact:true}).click();await expect(page.getByLabel('标题',{exact:true})).toHaveValue('新会话的未保存草稿');
+  }finally{release?.();await context.close();}
+});
+for (const lost of [false,true]) test(`follow-up: ${lost?'unconfirmed':'saved'} feedback stays locked and retries identical payload`,async({browser,baseURL},info)=>{
+  const context=await browser.newContext({...info.project.use,baseURL,extraHTTPHeaders:{'x-e2e-user':`freeze-${lost}-${info.project.name}`}});
+  try{
+    await seed(context,baseURL,'冻结反馈');const page=await context.newPage();await page.goto('/');await page.getByRole('heading',{name:'冻结反馈',exact:true}).waitFor();await feedback(page);const bodies=[];
+    if(lost)await page.route('**/api/reviews/submit',async route=>{bodies.push(route.request().postData());await route.fetch();await route.abort();});
+    else{page.on('request',r=>{if(r.url().endsWith('/api/reviews/submit'))bodies.push(r.postData());});await page.route('**/api/reviews',r=>r.fulfill({status:503,contentType:'application/json',body:'{"error":"sync failure"}'}));}
+    await page.getByRole('button',{name:'记录复习并安排下次 →'}).click();await expect(page.locator('.practice .alert')).toBeVisible();
+    await expect(page.getByRole('button',{name:'没有做对',exact:true})).toBeDisabled();await expect(page.getByLabel('做题时看过提示或解析')).toBeDisabled();await expect(page.getByRole('button',{name:'轻松',exact:true})).toBeDisabled();
+    if(lost){await page.unroute('**/api/reviews/submit');page.on('request',r=>{if(r.url().endsWith('/api/reviews/submit'))bodies.push(r.postData());});}
+    else await page.unroute('**/api/reviews');
+    await page.getByRole('button',{name:lost?'记录复习并安排下次 →':'已记录，重新同步 →'}).click();await expect(page.locator('.practice')).toHaveCount(0);
+    expect(bodies).toHaveLength(lost?2:1);if(lost)expect(bodies[1]).toBe(bodies[0]);expect((await(await context.request.get('/api/progress')).json()).reviewCount).toBe(1);
+  }finally{await context.close();}
+});
+test('follow-up: changed stable identity blocks old workspace even with same email',async({browser,baseURL},info)=>{
+  const owner=`identity-a-${info.project.name}`;const context=await browser.newContext({...info.project.use,baseURL,extraHTTPHeaders:{'x-e2e-user':owner}});
+  try{
+    await seed(context,baseURL,'A 的编辑器');const page=await context.newPage();await page.goto('/');await page.getByRole('button',{name:/错题库/}).click();await page.getByRole('button',{name:'查看 / 编辑',exact:true}).click();await page.getByLabel('标题',{exact:true}).fill('A 的未保存内容');
+    let writes=0;page.on('request',r=>{if(['POST','PATCH','DELETE'].includes(r.method()))writes++;});
+    await context.setExtraHTTPHeaders({'x-e2e-user':`identity-b-${info.project.name}`});
+    await page.route('**/api/auth/me',async route=>{const r=await route.fetch();await route.fulfill({response:r,json:{...await r.json(),email:`${owner}@example.test`}});});
+    await page.getByRole('button',{name:'↻ 同步',exact:true}).click();await expect(page.getByText(/账号已变化/)).toBeVisible();await expect(page.locator('.editor')).toHaveCount(0);await expect(page.locator('.sidebar')).toHaveCount(0);expect(writes).toBe(0);
+  }finally{await context.close();}
+});
+test('follow-up: same identity reauthentication preserves unsaved editor and can save',async({browser,baseURL},info)=>{
+  const context=await browser.newContext({...info.project.use,baseURL,extraHTTPHeaders:{'x-e2e-user':`same-identity-${info.project.name}`}});
+  try{
+    await seed(context,baseURL,'原有编辑器');const page=await context.newPage();await page.goto('/');await page.getByRole('button',{name:/错题库/}).click();await page.getByRole('button',{name:'查看 / 编辑',exact:true}).click();await page.getByLabel('标题',{exact:true}).fill('同账号恢复草稿');
+    await page.route('**/api/auth/me',r=>r.fulfill({status:200,contentType:'application/json',body:'{"authenticated":false}'}));await page.getByRole('button',{name:'↻ 同步',exact:true}).click();await expect(page.getByRole('link',{name:/重新登录/})).toBeVisible();await expect(page.getByLabel('标题',{exact:true})).toHaveValue('同账号恢复草稿');
+    await page.unroute('**/api/auth/me');await page.getByRole('button',{name:'↻ 同步',exact:true}).click();await expect(page.getByRole('link',{name:/重新登录/})).toHaveCount(0);await expect(page.getByLabel('标题',{exact:true})).toHaveValue('同账号恢复草稿');await page.getByRole('button',{name:'确认并加入复习 →'}).click();await expect(page.getByRole('heading',{name:'同账号恢复草稿',exact:true})).toBeVisible();
+  }finally{await context.close();}
+});
+test('follow-up: account switch immediately before save rejects the old workspace request',async({browser,baseURL},info)=>{
+  const owner=`write-a-${info.project.name}`;const context=await browser.newContext({...info.project.use,baseURL,extraHTTPHeaders:{'x-e2e-user':owner}});
+  try{
+    const id=await seed(context,baseURL,'不能跨账号写入');const page=await context.newPage();await page.goto('/');await page.getByRole('button',{name:/错题库/}).click();await page.getByRole('button',{name:'查看 / 编辑',exact:true}).click();await page.getByLabel('标题',{exact:true}).fill('旧草稿');
+    await context.setExtraHTTPHeaders({'x-e2e-user':`write-b-${info.project.name}`});const response=page.waitForResponse(r=>r.request().method()==='PATCH');await page.getByRole('button',{name:'确认并加入复习 →'}).click();const rejected=await response;
+    expect(rejected.request().headers()['x-ai-mls-account']).toBe(owner);expect(rejected.status()).toBe(409);expect((await rejected.json()).code).toBe('ACCOUNT_CHANGED');await expect(page.getByText(/账号已变化/)).toBeVisible();
+    expect((await(await context.request.get('/api/questions')).json()).questions).toHaveLength(0);await context.setExtraHTTPHeaders({'x-e2e-user':owner});expect((await(await context.request.get('/api/questions')).json()).questions.find(q=>q.id===id).title).toBe('不能跨账号写入');
+  }finally{await context.close();}
+});

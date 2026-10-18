@@ -10,7 +10,7 @@
 
 原图接口实际加载；上传经过真实浏览器重编码。数据和模型响应均为合成，不代表真实模型或线上多账号认证验收。19 条 API 回归、typecheck、新增 JS lint 均通过。全库既有 lint 错误仍未整改；代码审查无阻塞发现，JS 正式审查因既有 lint 门禁未给出无条件批准。
 
-本地原始证据在 [browser log](evidence/m2-2026-10-18/local-browser.log)、[JSON](evidence/m2-2026-10-18/local-results.json)。失败时输出 trace/截图，正式命令不自动重试。初期夹具错误及模块路径/加载顺序错误均以失败结束，修正后重跑通过。
+原始 browser log 与结果 JSON 已移至本机受限目录 `.sites-runtime/m4/historical-evidence/m2-2026-10-18/`，不随公开仓库分发；公开核验入口为[脱敏摘要](evidence/m2-2026-10-18.json)及下方固定 SHA 的 GitHub run/PR 证据。失败时输出 trace/截图，正式命令不自动重试。初期夹具错误及模块路径/加载顺序错误均以失败结束，修正后重跑通过。
 
 截图与原始运行证据保存在本地受限目录；公开摘要不包含图片或个人元数据。
 

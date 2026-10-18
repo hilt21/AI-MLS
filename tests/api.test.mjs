@@ -9,10 +9,19 @@ const objects=new Map();globalThis.__testEnv={DB:{prepare:s=>new Statement(s),ba
 const output=mkdtempSync(tmpdir()+'/aimls-')+'/api.mjs';
 await build({entryPoints:['app/api/[...path]/route.ts'],outfile:output,bundle:true,platform:'node',format:'esm',plugins:[{name:'isolated-test-boundaries',setup(b){b.onResolve({filter:/^cloudflare:workers$/},()=>({path:'env',namespace:'test'}));b.onResolve({filter:/chatgpt-auth$/},()=>({path:'auth',namespace:'test'}));b.onLoad({filter:/.*/,namespace:'test'},a=>({contents:a.path==='env'?'export const env=globalThis.__testEnv':'export async function getChatGPTUser(){return globalThis.__testUser}'}))}}]});
 const api=await import(output);let passes=0;async function check(name,fn){await fn();passes++;console.log('PASS',name)}
-async function call(path,method='GET',body,origin='https://qa.test'){let headers={origin};if(body&&!(body instanceof FormData))headers['Content-Type']='application/json';return api[method](new Request('https://qa.test/api/'+path,{method,headers,body:body?(body instanceof FormData?body:JSON.stringify(body)):undefined}))}
+async function call(path,method='GET',body,origin='https://qa.test',expectedUser){let headers={origin};if(expectedUser)headers['x-ai-mls-account']=expectedUser;if(body&&!(body instanceof FormData))headers['Content-Type']='application/json';return api[method](new Request('https://qa.test/api/'+path,{method,headers,body:body?(body instanceof FormData?body:JSON.stringify(body)):undefined}))}
 globalThis.__testUser=null;
 await check('anonymous access is rejected',async()=>{assert.equal((await call('questions')).status,401);assert.equal((await call('health')).status,401)});
 globalThis.__testUser={userId:'student-a',email:'a@example.test'};
+await check('identity endpoint exposes stable identity and expected-account guard blocks mismatched reads and writes',async()=>{
+ const identity=await(await call('auth/me')).json();assert.equal(identity.userId,'student-a');
+ const before=objects.size;
+ for(const [path,method,data] of [['questions','GET'],['upload','POST',{}],['reviews/submit','POST',{}]]){
+  const response=await call(path,method,data,'https://qa.test','student-b');assert.equal(response.status,409);assert.equal((await response.json()).code,'ACCOUNT_CHANGED');
+ }
+ assert.equal(objects.size,before);
+ assert.equal((await call('questions','GET',undefined,'https://qa.test','student-a')).status,200);
+});
 await check('cross-origin mutation rejected',async()=>assert.equal((await call('upload','POST',{},'https://evil.test')).status,403));
 await check('authenticated health reads dependencies without returning user data',async()=>{
  const bucket=globalThis.__testEnv.BUCKET;bucket.list=async()=>({objects:[]});
