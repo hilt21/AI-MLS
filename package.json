@@ -18,7 +18,9 @@
     "config:release": "node scripts/prepare-worker-config.mjs",
     "build:release": "pnpm run build && pnpm config:release",
     "preview:deploy": "pnpm config:release && wrangler preview --config dist/server/wrangler.release.json --ignore-base-config",
-    "test:browser": "node scripts/run-browser-tests.mjs"
+    "test:browser": "node scripts/run-browser-tests.mjs",
+    "test:recovery": "node --test tests/recovery/*.test.mjs",
+    "test:recovery:browser": "playwright test --config tests/recovery/playwright.config.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -74,7 +76,8 @@
     "vinext": "1.0.0-beta.5",
     "vite": "8.0.13",
     "wrangler": "4.135.0",
-    "@playwright/test": "1.58.2"
+    "@playwright/test": "1.58.2",
+    "miniflare": "5.20260918.0-alpha"
   },
   "type": "module",
   "overrides": {
