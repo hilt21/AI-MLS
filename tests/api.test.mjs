@@ -11,9 +11,15 @@ await build({entryPoints:['app/api/[...path]/route.ts'],outfile:output,bundle:tr
 const api=await import(output);let passes=0;async function check(name,fn){await fn();passes++;console.log('PASS',name)}
 async function call(path,method='GET',body,origin='https://qa.test'){let headers={origin};if(body&&!(body instanceof FormData))headers['Content-Type']='application/json';return api[method](new Request('https://qa.test/api/'+path,{method,headers,body:body?(body instanceof FormData?body:JSON.stringify(body)):undefined}))}
 globalThis.__testUser=null;
-await check('anonymous access is rejected',async()=>assert.equal((await call('questions')).status,401));
+await check('anonymous access is rejected',async()=>{assert.equal((await call('questions')).status,401);assert.equal((await call('health')).status,401)});
 globalThis.__testUser={userId:'student-a',email:'a@example.test'};
 await check('cross-origin mutation rejected',async()=>assert.equal((await call('upload','POST',{},'https://evil.test')).status,403));
+await check('authenticated health reads dependencies without returning user data',async()=>{
+ const bucket=globalThis.__testEnv.BUCKET;bucket.list=async()=>({objects:[]});
+ const r=await call('health');assert.equal(r.status,200);assert.deepEqual(await r.json(),{ready:true,checks:{database:true,images:true}});
+ bucket.list=async()=>{throw new Error('private storage detail')};const bad=await call('health');assert.equal(bad.status,503);assert.deepEqual(await bad.json(),{ready:false});
+ bucket.list=async()=>({objects:[]});
+});
 const form=new FormData();form.append('photo',new File([new Uint8Array([255,216,255,217])],'test.jpg',{type:'image/jpeg'}));
 let id;await check('upload creates durable draft with explicit model unavailable state',async()=>{const r=await call('upload','POST',form);assert.equal(r.status,200);id=(await r.json()).id;assert.equal(objects.size,1);const q=(await (await call('questions')).json()).questions[0];assert.equal(q.status,'draft');assert.match(q.recognition_notes,/模型尚未配置/)});
 globalThis.__testUser={userId:'student-b',email:'b@example.test'};

@@ -198,3 +198,16 @@ test('scheduled backup tick tolerates twelve-hour Cron jitter without losing the
   assert.equal((await manifests(env.archive)).length, 2);
   assert.equal(emails, 0);
 }));
+
+test('authorized application readiness failure sends mail despite a fresh backup, then mails recovery', async () => setup(async env => {
+  const { checkBackup } = await import('../../ops/watchdog.mjs');
+  await createBackup(env);
+  let healthy = false; const messages = [];
+  const monitored = { ARCHIVE: env.archive, ALERT_TO: 'verified@example.test', ALERT_FROM: 'ops@example.test',
+    EMAIL: { send: async message => { messages.push(message); } },
+    APPLICATION_HEALTH: { fetch: async () => healthy ? Response.json({ ready: true, checks: { database: true, images: true } }) : Response.json({ ready: false }, { status: 503 }) } };
+  assert.equal((await checkBackup(monitored)).failed, true);
+  assert.match(messages[0].text, /application dependency readiness failed/);
+  healthy = true; assert.equal((await checkBackup(monitored)).failed, false);
+  assert.equal(messages.length, 2);
+}));

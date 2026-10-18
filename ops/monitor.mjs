@@ -1,5 +1,5 @@
 import { createBackup, manifests, MAX_AGE_MS, pruneExpired, validateBackup } from './backup.mjs';
-export async function notifyState({ archive, email, to, from, failed, reason, stateKey = 'monitor.json' }, now = Date.now()) {
+export async function notifyState({ archive, email, to, from, failed, reason, stateKey = 'monitor.json', source = 'isolated-cloud-preview' }, now = Date.now()) {
   if (!to || !from || !email) throw new Error('Verified mail configuration required');
   let state = {};
   try {
@@ -18,9 +18,10 @@ export async function notifyState({ archive, email, to, from, failed, reason, st
   }
   const changed = state.failed !== failed;
   if (!changed && (!failed || now - state.sentAt < 6 * 3_600_000)) return { sent: false };
-  const subject = failed ? '[AI-MLS pilot] Backup or application check needs attention' : '[AI-MLS pilot] Backup monitoring recovered';
+  const label = source === 'production' ? 'production' : 'pilot';
+  const subject = failed ? `[AI-MLS ${label}] Backup or application check needs attention` : `[AI-MLS ${label}] Backup monitoring recovered`;
   // Deliberately omit owner IDs, object keys, question text and raw exceptions.
-  const text = `Test environment: ${reason}. UTC: ${new Date(now).toISOString()}. Operator response required; no automatic rollback was performed.`;
+  const text = `${label} environment: ${reason}. UTC: ${new Date(now).toISOString()}. Operator response required; no automatic rollback was performed.`;
   await email.send({ to, from: { email: from, name: 'AI-MLS pilot operations' }, subject, text, html: `<p>${text}</p>` });
   await archive.put(stateKey, JSON.stringify({ failed, sentAt: now }));
   return { sent: true, failed };
@@ -56,5 +57,5 @@ export async function tick(env, now = Date.now()) {
       if (r.status !== 403) { failed = true; reason = 'application authentication boundary check failed'; }
     } catch { failed = true; reason = 'application check failed'; }
   }
-  return notifyState({ archive: env.ARCHIVE, email: env.EMAIL, to: env.ALERT_TO, from: env.ALERT_FROM, failed, reason }, now);
+  return notifyState({ archive: env.ARCHIVE, email: env.EMAIL, to: env.ALERT_TO, from: env.ALERT_FROM, failed, reason, source: env.SOURCE_LABEL }, now);
 }

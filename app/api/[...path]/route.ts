@@ -12,6 +12,7 @@ async function handler(req:Request){
  if(!user)return json({error:'请先登录'},401);
  if(req.method!=='GET'&&req.headers.get('origin')!==new URL(req.url).origin)return json({error:'请求来源无效'},403);
  const db=env.DB;const bucket=env.BUCKET;if(!db||!bucket)return json({error:"存储服务尚未就绪"},503);const owner=user.userId;const now=new Date().toISOString();
+ if(path==='health'&&req.method==='GET'){try{await db.prepare('SELECT 1 AS ready').first();await bucket.list({limit:1});return json({ready:true,checks:{database:true,images:true}})}catch{return json({ready:false},503)}}
  const rows=await db.prepare('SELECT * FROM questions WHERE owner=? ORDER BY created DESC').bind(owner).all<any>();
  const all=rows.results;const reviewable=(q:any)=>q.status==='confirmed'&&JSON.parse(q.data).question_markdown!=='请对照原图填写题目。';const item=(q:any)=>({...JSON.parse(q.data),id:q.id,status:q.status,created_at:q.created});
  if(path==='questions'&&req.method==='GET')return json({questions:all.map(item)});

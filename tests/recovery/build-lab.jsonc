@@ -1,0 +1,8 @@
+{
+  "name": "ai-mls-m4-build-lab",
+  "main": "build-lab-worker.mjs",
+  "compatibility_date": "2026-09-25",
+  "workers_dev": false,
+  "preview_urls": false,
+  "version_metadata": { "binding": "VERSION" }
+}

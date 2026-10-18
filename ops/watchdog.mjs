@@ -1,5 +1,6 @@
 import { manifests, MAX_AGE_MS, validateBackup } from './backup.mjs';
 import { notifyState } from './monitor.mjs';
+import { checkApplication } from './application-health.mjs';
 export async function checkBackup(env, now = Date.now()) {
   let failed = false;
   let reason = 'independent restore-point check current';
@@ -13,8 +14,13 @@ export async function checkBackup(env, now = Date.now()) {
       if (response.status !== 404) { failed = true; reason = 'backup Worker readiness failed'; }
     }
   } catch { failed = true; reason = 'independent restore-point validation or storage failed'; }
+  // An explicitly authorized transport is required; a 403 is never readiness.
+  // No production transport or Access credentials are provisioned here.
+  if (env.APPLICATION_HEALTH && !await checkApplication(env.APPLICATION_HEALTH, 'https://application.invalid/api/health')) {
+    failed = true; reason = 'application dependency readiness failed';
+  }
   return notifyState({ archive: env.ARCHIVE, email: env.EMAIL, to: env.ALERT_TO,
-    from: env.ALERT_FROM, failed, reason, stateKey: 'watchdog.json' }, now);
+    from: env.ALERT_FROM, failed, reason, stateKey: 'watchdog.json', source: env.SOURCE_LABEL }, now);
 }
 const watchdog = {
   fetch() { return new Response('Not found', { status: 404 }); },
