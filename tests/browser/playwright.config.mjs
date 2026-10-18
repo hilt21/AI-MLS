@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 export default defineConfig({
-  testDir: '.', testMatch: 'learning.spec.mjs', workers: 1, retries: 0,
+  testDir: '.', testMatch: ['learning.spec.mjs', 'recovery.spec.mjs'], workers: 1, retries: 0,
   timeout: 60_000, expect: { timeout: 15_000 },
   reporter: [['list'], ['json', { outputFile: path.join(root, 'outputs/browser/results.json') }]],
   outputDir: path.join(root, 'outputs/browser/artifacts'),

@@ -20,9 +20,10 @@ export const QuestionEditSchema = QuestionSchema.pick({
   title: true, question_markdown: true, solution_markdown: true,
   correct_answer: true, student_wrong_answer: true, stage: true,
   grade: true, knowledge_points: true, error_type: true, image_required: true,
-}).refine(q=>q.stage==='primary'?q.grade<=6:q.grade>=7,{message:'学段与年级不匹配'});
+}).extend({expectedVersion:z.number().int().nonnegative()}).refine(q=>q.stage==='primary'?q.grade<=6:q.grade>=7,{message:'学段与年级不匹配'});
 export const ReviewInputSchema = z.object({
   questionId: z.string().uuid(),
+  expectedVersion: z.number().int().nonnegative(),
   submissionId: z.string().uuid(),
   rawAnswer: z.string().trim().max(5000).default(''),
   selfReportCorrect: z.boolean(),
