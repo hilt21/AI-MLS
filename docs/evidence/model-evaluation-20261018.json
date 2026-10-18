@@ -748,5 +748,16 @@
       ],
       "measured_requests": []
     }
-  ]
+  ],
+  "post_publish_verification": {
+    "documentation_commit": "813a3d6fd465ee205ca7bbe2f5f506af5ed93503",
+    "build_id": "d8eded2a-c05f-48c1-8374-52b3ecce9c43",
+    "preview_deployment": "d8a417e1-73b6-4060-9d06-7c168d80fcee",
+    "test_d1_retained": true,
+    "test_r2_retained": true,
+    "model_api_key_secret_present": false,
+    "model_base_url_present": false,
+    "model_name_present": false,
+    "status": "model configuration persistence gap; real evaluation evidence remains tied to previous deployment"
+  }
 }
