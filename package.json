@@ -17,7 +17,8 @@
     "test:config": "node --test tests/release-config.test.mjs",
     "config:release": "node scripts/prepare-worker-config.mjs",
     "build:release": "pnpm run build && pnpm config:release",
-    "preview:deploy": "pnpm config:release && wrangler preview --config dist/server/wrangler.release.json --ignore-base-config"
+    "preview:deploy": "pnpm config:release && wrangler preview --config dist/server/wrangler.release.json --ignore-base-config",
+    "test:browser": "node scripts/run-browser-tests.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -72,7 +73,8 @@
     "typescript": "5.9.3",
     "vinext": "1.0.0-beta.5",
     "vite": "8.0.13",
-    "wrangler": "4.135.0"
+    "wrangler": "4.135.0",
+    "@playwright/test": "1.58.2"
   },
   "type": "module",
   "overrides": {
