@@ -4,7 +4,7 @@
 
 ## 当前版本
 
-根目录是 Vinext / React / TypeScript / D1 / R2 / ts-fsrs 云端试点工程，保留 Sites 集成。当前独立 Cloudflare 部署基线为 [milestone-2026-10-17](https://github.com/hilt21/AI-MLS/releases/tag/milestone-2026-10-17)，入口为 [错题进步簿](https://mls.embrake.dev/)，使用 Cloudflare Access 邮箱白名单。该试点身份不等同于完整的正式学生账号体系。
+根目录是 Vinext / React / TypeScript / D1 / R2 / ts-fsrs 云端试点工程，保留 Sites 集成。当前独立 Cloudflare 业务试点版本为 [milestone-2026-10-20](https://github.com/hilt21/AI-MLS/releases/tag/milestone-2026-10-20)（已发布提交 `d95d56d`），入口为 [错题进步簿](https://mls.embrake.dev/)，使用 Cloudflare Access 邮箱白名单。该试点身份不等同于完整的正式学生账号体系。
 
 运行路径和历史方案边界见 [云端架构](docs/CLOUD_ARCHITECTURE.md)；现有 Workers Builds、Sites 发布目标、只读审计和最小改造方案见 [持续开发与维护](docs/DEVELOPMENT.md)。
 
@@ -34,14 +34,14 @@ D1 schema 位于 `db/schema.ts`，迁移位于 `drizzle/`。修改 schema 后运
 
 干净克隆的构建复现、配置差异与权限核查结果见 [M0 验证报告](docs/M0_VERIFICATION.md)。
 
-发布配置、Wrangler 升级与隔离 Preview 的使用及验证见 [M1 验证报告](docs/M1_VERIFICATION.md)。生产发布切换尚未执行。
+发布配置、Wrangler 升级与隔离 Preview 的使用及验证见 [M1 验证报告](docs/M1_VERIFICATION.md)。生产沿用既有 main → Workers Builds 入口，新仓库发布脚本尚未切换生产。
 
 提交 PR 前按 [PR 验收规则](docs/PR_ACCEPTANCE.md)执行浏览器检查及对应真实集成；本轮证据见 [M2 验证报告](docs/M2_VERIFICATION.md)。
 
-隔离备份、邮件告警、恢复和有限回滚的使用与证据见 [M3 验证报告](docs/M3_VERIFICATION.md)；生产接入尚未执行。
+隔离备份、邮件告警、恢复和有限回滚的使用与证据见 [M3 验证报告](docs/M3_VERIFICATION.md)；生产备份接入尚未执行。
 
-生产规模核查、独立容量与健康告警验证见 [M4-A 验收](docs/M4A_VERIFICATION.md)；当前 CPU 预算门槛未通过，生产备份与发布切换均未启用。
+生产规模核查、独立容量与健康告警验证见 [M4-A 验收](docs/M4A_VERIFICATION.md)；当前 CPU 预算门槛未通过，生产备份未启用，发布入口未切换；业务试点已独立发布。
 
-当前维持免费套餐与简单备份、失败通知、人工恢复；分片和高级自动化暂缓，CPU 可靠性缺口保留。下一重点见[学生使用、识别与学习闭环审计](docs/STUDENT_WORKFLOW_AUDIT.md)，生产接入继续暂缓。
+当前业务试点已获用户接受 CPU 风险并发布，仅供现有 Access 白名单少量账号试用；生产备份及告警接入未启用，Sites 资源映射与冻结继续阻塞。免费套餐、备份 CPU 可靠性及生产恢复目标缺口保留；不代表正式学生上线。
 
-后续已采用[最小业务发布路线](docs/DEVELOPMENT.md#最小业务发布路线--2026-10-18)：应用试点与生产备份分开验收，保留 Access 白名单和限额，补关键业务 CPU 验证并按最终提交批准发布。备份 CPU 缺口继续开放，不自动等同于业务试点失败；本路线尚未执行生产发布。
+本次发布关联、Preview 完整闭环与生产只读验收、CPU 风险和有限代码回滚条件见[当前发布状态](docs/DEVELOPMENT.md#当前发布状态--2026-10-20)。学生使用与识别质量的剩余问题见[专项审计](docs/STUDENT_WORKFLOW_AUDIT.md)。
