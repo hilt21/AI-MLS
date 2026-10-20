@@ -13,7 +13,14 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "test": "node tests/api.test.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:config": "node --test tests/release-config.test.mjs",
+    "config:release": "node scripts/prepare-worker-config.mjs",
+    "build:release": "pnpm run build && pnpm config:release",
+    "preview:deploy": "pnpm config:release && wrangler preview --config dist/server/wrangler.release.json --ignore-base-config",
+    "test:browser": "node scripts/run-browser-tests.mjs",
+    "test:recovery": "node --test tests/recovery/*.test.mjs",
+    "test:recovery:browser": "playwright test --config tests/recovery/playwright.config.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -48,8 +55,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
-    "@cloudflare/workers-types": "4.20260515.1",
+    "@cloudflare/vite-plugin": "1.56.0",
+    "@cloudflare/workers-types": "5.20260918.1",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
@@ -68,7 +75,9 @@
     "typescript": "5.9.3",
     "vinext": "1.0.0-beta.5",
     "vite": "8.0.13",
-    "wrangler": "4.92.0"
+    "wrangler": "4.135.0",
+    "@playwright/test": "1.58.2",
+    "miniflare": "5.20260918.0-alpha"
   },
   "type": "module",
   "overrides": {

@@ -1,0 +1,41 @@
+{
+  "account_id": "${CLOUDFLARE_ACCOUNT_ID}",
+  "production": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "ai-mls-db",
+        "database_id": "${AI_MLS_PRODUCTION_D1_ID}"
+      }
+    ],
+    "r2_buckets": [
+      {
+        "binding": "BUCKET",
+        "bucket_name": "${AI_MLS_PRODUCTION_R2_BUCKET}"
+      }
+    ],
+    "vars": {
+      "CLOUDFLARE_ACCESS_ISSUER": "${CLOUDFLARE_ACCESS_ISSUER}",
+      "CLOUDFLARE_ACCESS_AUD": "${CLOUDFLARE_ACCESS_AUD}"
+    }
+  },
+  "previews": {
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "ai-mls-preview-db",
+        "database_id": "${AI_MLS_PREVIEW_D1_ID}"
+      }
+    ],
+    "r2_buckets": [
+      {
+        "binding": "BUCKET",
+        "bucket_name": "${AI_MLS_PREVIEW_R2_BUCKET}"
+      }
+    ],
+    "vars": {
+      "CLOUDFLARE_ACCESS_ISSUER": "${CLOUDFLARE_ACCESS_ISSUER}",
+      "CLOUDFLARE_ACCESS_AUD": "${CLOUDFLARE_ACCESS_AUD}"
+    }
+  }
+}

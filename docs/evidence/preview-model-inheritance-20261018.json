@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-18",
+  "scope": "Preview model configuration inheritance only; no production writes or main merge",
+  "fix_commit": "bd94b199eecb990ff43235005d7ee71c8a4a00bf",
+  "wrangler": "4.135.0",
+  "opt_in": "AI_MLS_PREVIEW_MODEL_INHERIT=1 (branch build variable only)",
+  "inherit_names": [
+    "MODEL_API_KEY",
+    "MODEL_BASE_URL",
+    "MODEL_NAME"
+  ],
+  "ignore_base_config": true,
+  "production_output_regression": "identical with opt-in enabled or absent",
+  "secret_reentered_by_user": true,
+  "secret_values_read_or_compared": false,
+  "pre_fix_deployment": "86ad197a-1904-416b-a8bd-179d5c0a4f24",
+  "seed_deployment": "ca108758-56fd-46a8-af99-eb83bacb5873",
+  "builds": [
+    {
+      "id": "0f7ae89c-a503-401d-bfd5-727f54f8dd1f",
+      "outcome": "success",
+      "deployment": "d3a2a161-0bed-4022-909a-583b60f5013b",
+      "base_url": "https://api.minimax.cn/v1"
+    },
+    {
+      "id": "0941f7dd-b7ad-42b0-8c7e-e94351b9016f",
+      "outcome": "success",
+      "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+      "base_url": "https://api.minimax.cn/v1/"
+    }
+  ],
+  "verified_each_build": {
+    "model_key_type": "secret_text",
+    "model": "MiniMax-M3",
+    "test_d1": true,
+    "test_r2": true,
+    "binding_names": [
+      "BUCKET",
+      "CLOUDFLARE_ACCESS_AUD",
+      "CLOUDFLARE_ACCESS_ISSUER",
+      "DB",
+      "MODEL_API_KEY",
+      "MODEL_BASE_URL",
+      "MODEL_NAME"
+    ]
+  },
+  "inheritance_source_probe": {
+    "preview_base_url": "https://api.minimax.cn/v1/",
+    "production_base_url": "https://api.minimax.cn/v1",
+    "normalization": "recognizeImage removes trailing slash",
+    "result": "target Preview's distinct value preserved across full rebuild"
+  },
+  "runtime_probe": {
+    "fixture": "existing blank synthetic image, not one of E01-E20",
+    "calls": 1,
+    "new_questions": 0,
+    "new_images": 0,
+    "confirmed": 0,
+    "reviews": 0,
+    "deletes": 0,
+    "scope": "provider credential/connectivity and safe schema rejection; not recognition quality success",
+    "success": true,
+    "sameRequest": true,
+    "events": [
+      {
+        "timestamp": 1792317666386,
+        "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+        "message": "POST /api/questions/<fixture>/recognize",
+        "responseStatus": 502,
+        "wallTimeMs": 4129,
+        "cpuTimeMs": 36
+      },
+      {
+        "timestamp": 1792317666386,
+        "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+        "message": "Recognition failed",
+        "phase": "schema"
+      },
+      {
+        "timestamp": 1792317666386,
+        "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+        "message": "Recognition schema mismatch",
+        "issues": [
+          {
+            "path": "title",
+            "code": "too_small"
+          },
+          {
+            "path": "question_markdown",
+            "code": "too_small"
+          }
+        ]
+      },
+      {
+        "timestamp": 1792317666386,
+        "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+        "message": "Recognition provider status",
+        "providerCode": 0
+      },
+      {
+        "timestamp": 1792317666381,
+        "deployment": "20a63f84-1955-4764-8921-dacbef6c4424",
+        "message": "Recognition response status",
+        "httpStatus": 200
+      }
+    ]
+  },
+  "checks": {
+    "red": {
+      "pass": 8,
+      "fail": 2
+    },
+    "release_config": {
+      "pass": 10,
+      "fail": 0
+    },
+    "api": {
+      "pass": 23,
+      "fail": 0
+    },
+    "typecheck": "pass",
+    "modified_files_eslint": "pass",
+    "standards_review": "no findings",
+    "spec_review": "no findings"
+  },
+  "production": {
+    "deployment": "dbada608-1b3a-42d3-94e3-cc12a7ddc969",
+    "version": "120592fd-3e6b-4889-a26f-0ad78dd77e5c",
+    "percentage": 100,
+    "storage_bindings_unchanged": true,
+    "writes": false,
+    "backups_enabled": false
+  },
+  "main_merged": false,
+  "cpu_reliability_gap": "open; probe CPU 36ms is not a reliable free-tier budget guarantee",
+  "sites_freeze": "blocked; shared-resource mapping remains unverified",
+  "final_documentation_head_evidence": "Latest head build checks, deployment metadata, and integration FAILURE are recorded on PR #3"
+}
