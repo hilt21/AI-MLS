@@ -14,10 +14,10 @@ M1 已建立 Cloudflare 原生分支 Preview，绑定独立测试 D1/R2，并复
 当前独立 Cloudflare 部署与 Sites 托管版本是两个发布目标，不能因源码共享而视为同一环境。
 本页说明运行架构；发布关系、资源快照、证据和改造顺序见[持续开发与维护](DEVELOPMENT.md)。
 
-当前基线为 [milestone-2026-10-17](https://github.com/hilt21/AI-MLS/releases/tag/milestone-2026-10-17)，
-源码提交 `ebc287a71823836b2711b1ff47ac0cd0a8b381a0`，入口为 https://mls.embrake.dev/。
-2026-10-18 只读审计核对了 GitHub 标签、成功 Builds 和当前 Worker 部署的关联。
-Release 中的人工验收属于该里程碑证据，不等于本轮重新运行验收。
+当前业务试点为 [milestone-2026-10-20](https://github.com/hilt21/AI-MLS/releases/tag/milestone-2026-10-20)，
+已发布源码提交 `d95d56d898510670be0cda86f641aa2d9bbad87d`，入口为 https://mls.embrake.dev/。
+现有运行架构和生产配置保持原样；发布关联、验收边界、业务 CPU 风险、生产备份未启用及 Sites 冻结阻塞见[当前发布状态](DEVELOPMENT.md#当前发布状态--2026-10-20)。
+2026-10-17 里程碑及下方 M0–M2 描述保留历史语境，不代表当前尚未发布。
 
 ## 当前运行路径
 
