@@ -5,10 +5,10 @@ export type Crop = { left: number; top: number; right: number; bottom: number };
 const full: Crop = { left: 0, top: 0, right: 100, bottom: 100 };
 
 /** Coordinates are percentages of the displayed image, independent of screen size. */
-export function PhotoCrop({ src, busy, onApply, onCancel }: {
-  src: string; busy: boolean; onApply: (crop: Crop) => void; onCancel: () => void;
+export function PhotoCrop({ src, initialCrop, busy, onApply, onCancel }: {
+  src: string; initialCrop?: Crop; busy: boolean; onApply: (crop: Crop) => void; onCancel: () => void;
 }) {
-  const [crop, setCrop] = useState<Crop>(full);
+  const [crop, setCrop] = useState<Crop>(initialCrop??full);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const drag = useRef<{ id: number; x: number; y: number; previous: Crop } | null>(null);
