@@ -29,3 +29,5 @@ D1 schema 位于 `db/schema.ts`，迁移位于 `drizzle/`。修改 schema 后运
 ## 验证边界
 
 见 `docs/CLOUD_QA.md` 和 `docs/CLOUD_ARCHITECTURE.md`。自动 API 测试使用真实内存 SQLite，模拟平台身份与 R2，不代表线上跨账号或真实模型测试通过。
+
+隔离备份、邮件告警、恢复和有限回滚的使用与证据见 [M3 验证报告](docs/M3_VERIFICATION.md)；生产接入尚未执行。

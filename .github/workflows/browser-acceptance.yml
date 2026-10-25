@@ -1,7 +1,6 @@
 name: Browser acceptance
 on:
   pull_request:
-    branches: [main]
 permissions:
   contents: read
 concurrency:
@@ -23,7 +22,7 @@ jobs:
           node-version: '24'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test:config && pnpm test && pnpm typecheck && pnpm build
+      - run: pnpm test:config && pnpm test && pnpm test:recovery && pnpm typecheck && pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:browser
       - name: Preserve browser evidence
@@ -31,6 +30,8 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: browser-${{ github.event.pull_request.head.sha }}
-          path: outputs/browser/
+          path: |
+            outputs/browser/
+            outputs/recovery/
           retention-days: 7
           if-no-files-found: ignore

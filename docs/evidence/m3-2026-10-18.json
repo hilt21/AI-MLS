@@ -1,0 +1,84 @@
+{
+  "stage": "M3",
+  "status": "isolated_trial_verified",
+  "date": "2026-10-18",
+  "source": "isolated Cloudflare preview only",
+  "production_data_accessed": false,
+  "local_recovery_tests": 19,
+  "local_recovery_passed": 19,
+  "local_app_with_remote_storage_browser_tests": 2,
+  "deployed_cloud_app_browser_tests": 1,
+  "post_rollback_deployed_cloud_browser_tests": 1,
+  "paired_restore": {
+    "questionCount": 2,
+    "reviewCount": 1,
+    "imageCount": 2,
+    "image_hash_matches": true,
+    "database_rows_match_snapshot": true
+  },
+  "drill_rpo_ms": 6217,
+  "drill_rto_to_cloud_browser_ms": 444987,
+  "fault_detected_at": "2026-10-18T05:03:57.279Z",
+  "cloud_application_ready_at": "2026-10-18T05:11:22.266Z",
+  "approval": "test restore pre-authorized; online Agent response; production restore still needs separate approval",
+  "cron": {
+    "backup": "0 */12 * * *",
+    "independent_check": "15 * * * *",
+    "actual_scheduled_completions_observed": true,
+    "renewal_threshold_hours": 11,
+    "jitter_regression": "12h minus 1s reproduced failure before fix, passed after fix",
+    "actual_scheduled_completions_precede_jitter_fix": true
+  },
+  "retention": {
+    "days": 7,
+    "expired_prefix_fault_injection_deleted": true,
+    "fresh_point_preserved": true,
+    "seven_wall_clock_days_observed": false
+  },
+  "email": {
+    "recipient_confirmed": true,
+    "platform_verified": true,
+    "delivery_test_received_in_inbox": true,
+    "stale_alert_received_in_inbox": true,
+    "recovery_notice_received_in_inbox": true,
+    "test_received_at": "2026-10-18T04:54:35Z",
+    "stale_received_at": "2026-10-18T05:00:05Z",
+    "recovery_received_at": "2026-10-18T05:00:20Z",
+    "stale_clock_metadata_injected": true
+  },
+  "cloud_rollbacks": {
+    "operations_worker": {
+      "before": 404,
+      "new_failures": [
+        500,
+        500
+      ],
+      "after": 404
+    },
+    "private_application": {
+      "before": 200,
+      "new_failures": [
+        500,
+        500
+      ],
+      "runtime_settings_unchanged": true,
+      "current_version_rechecked": true,
+      "operator_rollback": true,
+      "post_rollback_browser_passed": true
+    }
+  },
+  "public_worker_urls": false,
+  "production_settings_unchanged": true,
+  "production_deployment_unchanged": true,
+  "production_build_settings_unchanged": true,
+  "access_unchanged": true,
+  "email_dns": "only separately approved five Routing records added",
+  "sites_freeze": "blocked",
+  "limits": [
+    "Small synthetic dataset; 500-image quota/CPU envelope not validated",
+    "Hourly watchdog can report threshold breach at next hourly check",
+    "Cloudflare account/platform availability assumed",
+    "Production Access, real student rollout and production backup activation excluded",
+    "Natural twelve-hour interval and seven-day wall-clock retention require continued observation"
+  ]
+}
